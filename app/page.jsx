@@ -1,5 +1,6 @@
 import AuthenticationButton from "@/components/authentication";
 import Bot from "@/components/bot";
+import BotResponse from "@/components/botResponse";
 import Sidebar from "@/components/sidebar";
 import UserPrompt from "@/components/userPrompt";
 
