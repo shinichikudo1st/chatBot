@@ -17,8 +17,9 @@ const safetySettings = [
   },
 ];
 
-const BotResponse = ({ prompt }) => {
+const BotResponse = ({ prompt, index }) => {
   const [aiResponse, setAIResponse] = useState("");
+  const [displayedText, setDisplayedText] = useState("");
 
   useEffect(() => {
     async function run() {
@@ -38,14 +39,14 @@ const BotResponse = ({ prompt }) => {
       const generativeModel = genAI.getGenerativeModel({
         model: "gemini-1.5-flash",
         safetySettings,
-        systemInstruction: `You are a master of space and quantum knowledge, when someone asks you, answer it like you are belittling the knowledge of the questioneer.
-                          When someone ask you about questions not related with your mastery, subtly belittle them and question their species as a whole.`,
+        systemInstruction: `You are a master of space and quantum knowledge, when someone asks you, answer it in a calm manner.
+                          When someone ask you about questions not related with your mastery, you are very subtle with your humor on redirecting them in your mastery instead`,
       });
 
       const chat = generativeModel.startChat({
         history: [],
         generationConfig: {
-          maxOutputTokens: 100,
+          maxOutputTokens: 500,
         },
       });
 
@@ -63,9 +64,32 @@ const BotResponse = ({ prompt }) => {
     run();
   }, [prompt]);
 
+  useEffect(() => {
+    if (!aiResponse) return;
+
+    setDisplayedText("");
+
+    let charIndex = -1;
+    const interval = setInterval(() => {
+      if (charIndex < aiResponse.length - 1) {
+        setDisplayedText((prev) => prev + aiResponse[charIndex]);
+        charIndex++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [aiResponse]);
+
   return (
-    <div>
-      <p>{aiResponse}</p>
+    <div key={index} className="flex flex-col gap-2">
+      <div className=" p-[10px] text-[#f2f4fc] bg-[#202d5f] border-[2px] border-lime-400 2xl:w-[40%] rounded-[10px] h-auto 2xl:m-4 2xl:translate-x-[140%]">
+        {prompt}
+      </div>
+      <div className=" p-[10px] text-[#f2f4fc] w-auto h-auto m-4">
+        {displayedText}
+      </div>
     </div>
   );
 };
