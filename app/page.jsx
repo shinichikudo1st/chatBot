@@ -1,8 +1,7 @@
 import AuthenticationButton from "@/components/authentication";
 import Bot from "@/components/bot";
-import BotResponse from "@/components/botResponse";
+import Interaction from "@/components/interaction";
 import Sidebar from "@/components/sidebar";
-import UserPrompt from "@/components/userPrompt";
 
 export default function Home() {
   return (
@@ -10,7 +9,7 @@ export default function Home() {
       <AuthenticationButton />
       <Sidebar />
       <Bot />
-      <UserPrompt />
+      <Interaction />
     </main>
   );
 }
